@@ -3,10 +3,10 @@ const buttons = document.querySelectorAll('button')
 const currentExecutionEl = document.querySelector('.doing')
 const previousExecutionEl = document.querySelector('.done')
 const numButtons = document.querySelectorAll('[data-number]')
-const operationElements = document.querySelectorAll('[data-operation]')
+const operators = document.querySelectorAll('[data-operation]')
 const equalBtn = document.querySelector('[data-equal]')
 const deleteBtn = document.querySelector('[data-delete]')
-const clearBtn = document.querySelector('[clear-btn]')
+const clearBtn = document.querySelector('[data-clear]')
 
 class Calc {
   constructor(first, operation, second) {
@@ -49,28 +49,32 @@ numButtons.forEach((btn) => {
 })
 
 // Numeric Buttons
-operationElements.forEach((ele) => {
+operators.forEach((ele) => {
   ele.addEventListener('click', (e) => {
-    switchOperand()
-    operation = e.target.innerText
-    currentExecutionEl.innerText = ''
-    previousExecutionEl.innerText = firstOperand + operation
+    if (firstOperand.length > 0) {
+      switchOperand()
+      operation = e.target.innerText
+      currentExecutionEl.innerText = ''
+      previousExecutionEl.innerText = firstOperand + operation
+    }
   })
 })
 
 // Equal Button
 equalBtn.addEventListener('click', (e) => {
-  result = new Calc(firstOperand, operation, secondOperand).operate()
-  previousExecutionEl.innerText = ''
-  currentExecutionEl.innerText = result
-  firstOperand = result.toString()
-  secondOperand = ''
+  if (secondOperand.length > 0) {
+    result = new Calc(firstOperand, operation, secondOperand).operate()
+    previousExecutionEl.innerText = ''
+    currentExecutionEl.innerText = result
+    firstOperand = result.toString()
+    secondOperand = ''
+    bool = false
+  }
 })
 
 // Delete Button
 deleteBtn.addEventListener('click', (e) => {
-  console.log(bool, firstOperand, secondOperand)
-  if (bool) {
+  if (!bool) {
     firstOperand = firstOperand.slice(0, firstOperand.length - 1)
     currentExecutionEl.innerText = firstOperand
   } else {
