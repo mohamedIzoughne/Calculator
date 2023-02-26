@@ -33,10 +33,12 @@ class Calc {
   }
 }
 
-let firstOperand = ''
+let firstOperand = '0'
 let operation
 let secondOperand = ''
 let result
+
+currentExecutionEl.innerText = firstOperand
 
 let bool = false
 
@@ -56,6 +58,7 @@ operators.forEach((ele) => {
       operation = e.target.innerText
       currentExecutionEl.innerText = ''
       previousExecutionEl.innerText = firstOperand + operation
+      removeZeroFromPreviousEl()
     }
   })
 })
@@ -85,7 +88,7 @@ deleteBtn.addEventListener('click', (e) => {
 
 // Clear Button
 clearBtn.addEventListener('click', (e) => {
-  firstOperand = ''
+  firstOperand = '0'
   secondOperand = ''
   previousExecutionEl.innerText = ''
   currentExecutionEl.innerText = ''
@@ -100,6 +103,7 @@ clearBtn.addEventListener('click', (e) => {
 function setOperand(val) {
   bool ? (secondOperand += val) : (firstOperand += val)
   showOperand()
+  removeZeroFromCurrentEl()
 }
 
 // show operand in the current execution element based on index
@@ -115,5 +119,37 @@ function showOperand() {
 function switchOperand() {
   if (!bool) {
     bool = !bool
+  }
+}
+
+// Remove Zero in the beginning of the currentExecutionEl
+function removeZeroFromCurrentEl() {
+  let operandText = currentExecutionEl.innerText
+  if (operandText && operandText.length > 0) {
+    for (let i = 0; i < operandText.length; i++) {
+      if (+operandText[i] === 0) {
+        operandText = operandText.split('')
+        operandText.shift()
+        currentExecutionEl.innerText = operandText.join('')
+      } else {
+        break
+      }
+    }
+  }
+}
+
+// Remove Zero in the beginning of the previousExecutionEl
+function removeZeroFromPreviousEl() {
+  let operandText = previousExecutionEl.innerText
+  if (operandText && operandText.length > 0) {
+    for (let i = 0; i < operandText.length; i++) {
+      if (+operandText[i] === 0) {
+        operandText = operandText.split('')
+        operandText.shift()
+        previousExecutionEl.innerText = operandText.join('')
+      } else {
+        break
+      }
+    }
   }
 }
